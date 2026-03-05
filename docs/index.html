@@ -2,29 +2,111 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <title>Smart LED Display</title>
+<meta charset="UTF-8">
+<title>Smart LED Display</title>
+
+<style>
+
+body{
+    font-family: Arial, sans-serif;
+    background:#0f172a;
+    color:white;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+    margin:0;
+}
+
+.container{
+    background:#1e293b;
+    padding:30px;
+    border-radius:10px;
+    text-align:center;
+    width:350px;
+}
+
+input{
+    width:100%;
+    padding:10px;
+    margin-top:15px;
+    border:none;
+    border-radius:5px;
+}
+
+button{
+    margin-top:15px;
+    padding:10px;
+    width:100%;
+    border:none;
+    background:#3b82f6;
+    color:white;
+    font-weight:bold;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#2563eb;
+}
+
+</style>
+
 </head>
 
 <body>
 
-    <div class="container">
+<div class="container">
 
-        <h1>Smart LED Display</h1>
+<h1>Smart LED Display</h1>
 
-        <p>Send a message to the LED board</p>
+<p>Send a message to the LED board</p>
 
-        <input 
-        type="text" 
-        id="messageInput" 
-        placeholder="Enter your message">
+<input 
+type="text"
+id="messageInput"
+placeholder="Enter message">
 
-        <button id="sendButton">
-            Send Message
-        </button>
+<button id="sendButton">
+Send Message
+</button>
 
-    </div>
+</div>
+
+
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+
+<script>
+
+const firebaseConfig = {
+apiKey: "AIzaSyBbSaVTRkOlwEcK6EdewcTpAeDVCCG0Rg0",
+authDomain: "smart-led-display.firebaseapp.com",
+databaseURL: "https://smart-led-display-default-rtdb.asia-southeast1.firebasedatabase.app",
+projectId: "smart-led-display",
+storageBucket: "smart-led-display.firebasestorage.app",
+messagingSenderId: "385138898456",
+appId: "1:385138898456:web:f05abaee27cc1b635db56d"
+};
+
+firebase.initializeApp(firebaseConfig);
+
+const db = firebase.database();
+
+document.getElementById("sendButton").onclick = function(){
+
+const message = document.getElementById("messageInput").value;
+
+db.ref("led/message").set({
+text: message
+});
+
+alert("Message sent to LED display!");
+
+}
+
+</script>
 
 </body>
-
 </html>
