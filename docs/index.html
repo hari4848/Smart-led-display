@@ -98,9 +98,7 @@ document.getElementById("sendButton").onclick = function(){
 
 const message = document.getElementById("messageInput").value;
 
-db.ref("led/message").set({
-text: message
-});
+db.ref("led/message").set(message);
 
 alert("Message sent to LED display!");
 
