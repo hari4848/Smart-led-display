@@ -20,34 +20,68 @@ body{
 
 .container{
     background:#1e293b;
-    padding:30px;
-    border-radius:10px;
+    padding:35px;
+    border-radius:12px;
+    width:380px;
     text-align:center;
-    width:350px;
+    box-shadow:0 10px 25px rgba(0,0,0,0.4);
+}
+
+h1{
+    margin-bottom:10px;
+}
+
+p{
+    color:#94a3b8;
 }
 
 input{
     width:100%;
-    padding:10px;
+    padding:12px;
     margin-top:15px;
     border:none;
-    border-radius:5px;
+    border-radius:6px;
+    font-size:16px;
+}
+
+.counter{
+    text-align:right;
+    font-size:12px;
+    color:#94a3b8;
+    margin-top:5px;
 }
 
 button{
     margin-top:15px;
-    padding:10px;
+    padding:12px;
     width:100%;
     border:none;
+    border-radius:6px;
     background:#3b82f6;
     color:white;
     font-weight:bold;
-    border-radius:5px;
     cursor:pointer;
+    font-size:15px;
 }
 
 button:hover{
     background:#2563eb;
+}
+
+.preview{
+    margin-top:20px;
+    background:black;
+    padding:10px;
+    border-radius:6px;
+    font-family:monospace;
+    font-size:18px;
+    letter-spacing:2px;
+}
+
+.status{
+    margin-top:10px;
+    color:#22c55e;
+    font-size:14px;
 }
 
 </style>
@@ -59,22 +93,32 @@ button:hover{
 <div class="container">
 
 <h1>Smart LED Display</h1>
-
 <p>Send a message to the LED board</p>
 
-<input 
+<input
 type="text"
 id="messageInput"
-placeholder="Enter message">
+maxlength="50"
+placeholder="Enter your message">
+
+<div class="counter">
+<span id="count">0</span>/50
+</div>
 
 <button id="sendButton">
 Send Message
 </button>
 
+<div class="preview" id="preview">
+LED PREVIEW
+</div>
+
+<div class="status" id="status"></div>
+
 </div>
 
 
-<!-- Firebase SDK -->
+<!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 
@@ -91,16 +135,39 @@ appId: "1:385138898456:web:f05abaee27cc1b635db56d"
 };
 
 firebase.initializeApp(firebaseConfig);
-
 const db = firebase.database();
+
+
+const input = document.getElementById("messageInput");
+const counter = document.getElementById("count");
+const preview = document.getElementById("preview");
+const status = document.getElementById("status");
+
+input.addEventListener("input", function(){
+
+counter.innerText = input.value.length;
+
+preview.innerText = input.value || "LED PREVIEW";
+
+});
+
 
 document.getElementById("sendButton").onclick = function(){
 
-const message = document.getElementById("messageInput").value;
+const message = input.value.trim();
+
+if(message === ""){
+status.innerText = "Message cannot be empty";
+return;
+}
 
 db.ref("led/message").set(message);
 
-alert("Message sent to LED display!");
+status.innerText = "Message sent to LED display!";
+
+input.value = "";
+counter.innerText = "0";
+preview.innerText = "LED PREVIEW";
 
 }
 
