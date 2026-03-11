@@ -3,7 +3,6 @@
 
 <head>
 <meta charset="UTF-8">
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Smart LED Display</title>
@@ -64,7 +63,7 @@ margin-top:4px;
 }
 
 button{
-margin-top:15px;
+margin-top:12px;
 padding:14px;
 width:100%;
 border:none;
@@ -78,6 +77,18 @@ font-size:16px;
 
 button:active{
 background:#2563eb;
+}
+
+.quick{
+margin-top:20px;
+}
+
+.quick button{
+background:#10b981;
+}
+
+.quick button:active{
+background:#059669;
 }
 
 .preview{
@@ -125,6 +136,22 @@ placeholder="Enter your message">
 Send Message
 </button>
 
+<div class="quick">
+
+<button onclick="showTime()">
+Show Current Time
+</button>
+
+<button onclick="showWeather()">
+Show Weather
+</button>
+
+<button onclick="clearScreen()">
+Clear Screen
+</button>
+
+</div>
+
 <div class="preview" id="preview">
 LED PREVIEW
 </div>
@@ -157,11 +184,10 @@ const counter = document.getElementById("count");
 const preview = document.getElementById("preview");
 const status = document.getElementById("status");
 
-input.addEventListener("input", function(){
 
+input.addEventListener("input", function(){
 counter.innerText = input.value.length;
 preview.innerText = input.value || "LED PREVIEW";
-
 });
 
 
@@ -174,13 +200,49 @@ status.innerText = "Message cannot be empty";
 return;
 }
 
-db.ref("led/message").set(message);
+db.ref("led").set({
+type:"text",
+value:message
+});
 
 status.innerText = "Message sent!";
 
 input.value="";
 counter.innerText="0";
 preview.innerText="LED PREVIEW";
+
+}
+
+
+function showTime(){
+
+db.ref("led").set({
+type:"time"
+});
+
+status.innerText="Displaying Time";
+
+}
+
+
+function showWeather(){
+
+db.ref("led").set({
+type:"weather"
+});
+
+status.innerText="Displaying Weather";
+
+}
+
+
+function clearScreen(){
+
+db.ref("led").set({
+type:"clear"
+});
+
+status.innerText="Screen Cleared";
 
 }
 
