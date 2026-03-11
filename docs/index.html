@@ -9,9 +9,7 @@
 
 <style>
 
-*{
-box-sizing:border-box;
-}
+*{box-sizing:border-box;}
 
 body{
 font-family:Arial, sans-serif;
@@ -79,16 +77,8 @@ button:active{
 background:#2563eb;
 }
 
-.quick{
-margin-top:20px;
-}
-
 .quick button{
 background:#10b981;
-}
-
-.quick button:active{
-background:#059669;
 }
 
 .preview{
@@ -186,8 +176,10 @@ const status = document.getElementById("status");
 
 
 input.addEventListener("input", function(){
+
 counter.innerText = input.value.length;
 preview.innerText = input.value || "LED PREVIEW";
+
 });
 
 
@@ -200,10 +192,7 @@ status.innerText = "Message cannot be empty";
 return;
 }
 
-db.ref("led").set({
-type:"text",
-value:message
-});
+db.ref("led/message").set(message);
 
 status.innerText = "Message sent!";
 
@@ -216,33 +205,24 @@ preview.innerText="LED PREVIEW";
 
 function showTime(){
 
-db.ref("led").set({
-type:"time"
-});
-
-status.innerText="Displaying Time";
+db.ref("led/message").set("__TIME__");
+status.innerText="Time display activated";
 
 }
 
 
 function showWeather(){
 
-db.ref("led").set({
-type:"weather"
-});
-
-status.innerText="Displaying Weather";
+db.ref("led/message").set("__WEATHER__");
+status.innerText="Weather display activated";
 
 }
 
 
 function clearScreen(){
 
-db.ref("led").set({
-type:"clear"
-});
-
-status.innerText="Screen Cleared";
+db.ref("led/message").set("__CLEAR__");
+status.innerText="Screen cleared";
 
 }
 
